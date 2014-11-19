@@ -1,23 +1,26 @@
 language: php
 
 php:
-  - 5.5
-  - 5.4
+  - 5.6
   - hhvm
+  - hhvm-nightly
 
 matrix:
   allow_failures:
     - php: hhvm
+    - php: hhvm-nightly
+
+branches:
+  except:
+    - gh-pages
 
 before_script:
-  - composer require --no-update satooshi/php-coveralls:dev-master sensiolabs/security-checker:dev-master
-  - composer update --dev --no-interaction
-  - sudo easy_install Pygments
+  - travis_retry composer self-update
+  - travis_retry composer update --dev --no-interaction --prefer-source
 
 script:
   - mkdir -p build/logs
-  - phpunit -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
-  - php vendor/bin/security-checker security:check composer.lock
+  - phpunit -c phpunit.xml.dist --coverage-clover phpunit-coverage-clover.xml
 
 after_script:
   - php vendor/bin/coveralls

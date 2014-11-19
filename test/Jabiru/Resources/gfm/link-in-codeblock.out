@@ -1,0 +1,2 @@
+<pre><code class="language-php">$validator-&gt;validate('http://www.example.com/');
+</code></pre>

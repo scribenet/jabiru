@@ -1,3 +1,7 @@
+# Jabiru
+
+A PHP 5.6 Markdown parser supporting a specific subset/superset of the original Markdown implementation.
+
 Ciconia - A New Markdown Parser for PHP
 =======================================
 

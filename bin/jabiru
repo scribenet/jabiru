@@ -1,11 +1,10 @@
 #!/usr/bin/env php
 <?php
 
-use Scribe\Jabiru\Console\Command\CompileCommand;
-use Symfony\Component\Console\Application;
+use Scribe\Jabiru\Console\Application;
 
 if (PHP_SAPI !== 'cli') {
-    die('Compile command must be run on the CLI environment.');
+    echo 'Ciconia command should be run on the CLI environment.' . PHP_EOL;
 }
 
 $paths = [
@@ -23,6 +22,5 @@ foreach($paths as $path) {
     }
 }
 
-$app = new Application('Jabiru Compiler', \Scribe\Jabiru\Jabiru::VERSION);
-$app->add(new CompileCommand());
+$app = new Application('Jabiru', \Scribe\Jabiru\Jabiru::VERSION);
 $app->run();
