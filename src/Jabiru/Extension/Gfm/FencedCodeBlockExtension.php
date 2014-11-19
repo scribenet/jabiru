@@ -2,7 +2,7 @@
 
 namespace Scribe\Jabiru\Extension\Gfm;
 
-use Scribe\Jabiru\Common\Text;
+use Scribe\Jabiru\Component\Element\ElementLiteral;
 use Scribe\Jabiru\Extension\ExtensionInterface;
 use Scribe\Jabiru\Renderer\RendererAwareInterface;
 use Scribe\Jabiru\Renderer\RendererAwareTrait;
@@ -41,7 +41,7 @@ class FencedCodeBlockExtension implements ExtensionInterface, RendererAwareInter
      * @param Text  $text
      * @param array $options
      */
-    public function processFencedCodeBlock(Text $text, array $options = [])
+    public function processFencedCodeBlock(ElementLiteral $text, array $options = [])
     {
         /** @noinspection PhpUnusedParameterInspection */
         $text->replace(
@@ -55,7 +55,7 @@ class FencedCodeBlockExtension implements ExtensionInterface, RendererAwareInter
                     \1                    # matched #1
                 )
             }smx',
-            function (Text $w, Text $fence, Text $lang, Text $code) use ($options) {
+            function (ElementLiteral $w, ElementLiteral $fence, ElementLiteral $lang, ElementLiteral $code) use ($options) {
 
                 $rendererOptions = [];
 

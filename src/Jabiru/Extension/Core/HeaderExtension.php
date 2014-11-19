@@ -2,7 +2,7 @@
 
 namespace Scribe\Jabiru\Extension\Core;
 
-use Scribe\Jabiru\Common\Text;
+use Scribe\Jabiru\Component\Element\ElementLiteral;
 use Scribe\Jabiru\Extension\ExtensionInterface;
 use Scribe\Jabiru\Renderer\RendererAwareInterface;
 use Scribe\Jabiru\Renderer\RendererAwareTrait;
@@ -38,12 +38,12 @@ class HeaderExtension implements ExtensionInterface, RendererAwareInterface
     }
 
     /**
-     * @param Text $text
+     * @param ElementLiteral $text
      */
-    public function processSetExtHeader(Text $text)
+    public function processSetExtHeader(ElementLiteral $text)
     {
         /** @noinspection PhpUnusedParameterInspection */
-        $text->replace('{^(.+)[ \t]*\n(=+|-+)[ \t]*\n+}m', function (Text $whole, Text $content, Text $mark) {
+        $text->replace('{^(.+)[ \t]*\n(=+|-+)[ \t]*\n+}m', function (ElementLiteral $whole, ElementLiteral $content, ElementLiteral $mark) {
             $level = (substr($mark, 0, 1) == '=') ? 1 : 2;
 
             $this->markdown->emit('inline', array($content));
@@ -53,9 +53,9 @@ class HeaderExtension implements ExtensionInterface, RendererAwareInterface
     }
 
     /**
-     * @param Text $text
+     * @param ElementLiteral $text
      */
-    public function processAtxHeader(Text $text)
+    public function processAtxHeader(ElementLiteral $text)
     {
         /** @noinspection PhpUnusedParameterInspection */
         $text->replace('{
@@ -65,7 +65,7 @@ class HeaderExtension implements ExtensionInterface, RendererAwareInterface
             [ \t]*
             \#*         # optional closing #\'s (not counted)
             \n+
-        }mx', function (Text $whole, Text $marks, Text $content) {
+        }mx', function (ElementLiteral $whole, ElementLiteral $marks, ElementLiteral $content) {
             $level = strlen($marks);
 
             $this->markdown->emit('inline', array($content));

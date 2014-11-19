@@ -2,7 +2,7 @@
 
 namespace Scribe\Jabiru\Extension\Core;
 
-use Scribe\Jabiru\Common\Text;
+use Scribe\Jabiru\Component\Element\ElementLiteral;
 use Scribe\Jabiru\Extension\ExtensionInterface;
 use Scribe\Jabiru\Renderer\RendererAwareInterface;
 use Scribe\Jabiru\Renderer\RendererAwareTrait;
@@ -40,9 +40,9 @@ class WhitespaceExtension implements ExtensionInterface, RendererAwareInterface
     /**
      * Convert line breaks
      *
-     * @param Text $text
+     * @param ElementLiteral $text
      */
-    public function initialize(Text $text)
+    public function initialize(ElementLiteral $text)
     {
         $text->replaceString("\r\n", "\n");
         $text->replaceString("\r", "\n");
@@ -58,10 +58,10 @@ class WhitespaceExtension implements ExtensionInterface, RendererAwareInterface
      * @param Text  $text
      * @param array $options
      */
-    public function detab(Text $text, array $options = array())
+    public function detab(ElementLiteral $text, array $options = array())
     {
         /** @noinspection PhpUnusedParameterInspection */
-        $text->replace('/(.*?)\t/', function (Text $whole, Text $string) use ($options) {
+        $text->replace('/(.*?)\t/', function (ElementLiteral $whole, ElementLiteral $string) use ($options) {
             return $string . str_repeat(' ', $options['tabWidth'] - $string->getLength() % $options['tabWidth']);
         });
     }
@@ -72,7 +72,7 @@ class WhitespaceExtension implements ExtensionInterface, RendererAwareInterface
      * @param Text  $text
      * @param array $options
      */
-    public function outdent(Text $text, array $options = array())
+    public function outdent(ElementLiteral $text, array $options = array())
     {
         $text->replace('/^(\t|[ ]{1,' . $options['tabWidth'] . '})/m', '');
     }
@@ -80,7 +80,7 @@ class WhitespaceExtension implements ExtensionInterface, RendererAwareInterface
     /**
      * @param Text  $text
      */
-    public function processHardBreak(Text $text)
+    public function processHardBreak(ElementLiteral $text)
     {
         $text->replace('/ {2,}\n/', $this->getRenderer()->renderLineBreak() .  "\n");
     }

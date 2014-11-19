@@ -2,7 +2,7 @@
 
 namespace Scribe\Jabiru\Extension\Core;
 
-use Scribe\Jabiru\Common\Text;
+use Scribe\Jabiru\Component\Element\ElementLiteral;
 use Scribe\Jabiru\Extension\ExtensionInterface;
 use Scribe\Jabiru\Renderer\RendererAwareInterface;
 use Scribe\Jabiru\Renderer\RendererAwareTrait;
@@ -32,7 +32,7 @@ class HorizontalRuleExtension implements ExtensionInterface, RendererAwareInterf
     /**
      * @param Text  $text
      */
-    public function processHorizontalRule(Text $text)
+    public function processHorizontalRule(ElementLiteral $text)
     {
         $marks = array('\*', '-', '_');
 

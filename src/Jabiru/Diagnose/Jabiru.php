@@ -3,7 +3,7 @@
 namespace Scribe\Jabiru\Diagnose;
 
 use Scribe\Jabiru\Jabiru as BaseJabiru;
-use Scribe\Jabiru\Common\Text;
+use Scribe\Jabiru\Component\Element\ElementLiteral;
 
 class Jabiru extends BaseJabiru
 {
@@ -16,7 +16,7 @@ class Jabiru extends BaseJabiru
      */
     public function render($text, array $options = array())
     {
-        $text = new Text($text);
+        $text = new ElementLiteral($text);
         $markdown = new Markdown($this->getRenderer(), $text, $options);
 
         $this->registerExtensions($markdown);

@@ -2,7 +2,7 @@
 
 namespace Scribe\Jabiru\Extension\Core;
 
-use Scribe\Jabiru\Common\Text;
+use Scribe\Jabiru\Component\Element\ElementLiteral;
 use Scribe\Jabiru\Event\EmitterAwareInterface;
 use Scribe\Jabiru\Event\EmitterAwareTrait;
 use Scribe\Jabiru\Extension\ExtensionInterface;
@@ -32,16 +32,16 @@ class InlineStyleExtension implements ExtensionInterface, RendererAwareInterface
     }
 
     /**
-     * @param Text $text
+     * @param ElementLiteral $text
      */
-    public function processBold(Text $text)
+    public function processBold(ElementLiteral $text)
     {
         if (!$text->contains('**') && !$text->contains('__')) {
             return;
         }
 
         /** @noinspection PhpUnusedParameterInspection */
-        $text->replace('{ (\w?) (\*\*|__) (?=\S) (.+?[*_]*) (?<=\S) \2 (\w?) }sx', function (Text $w, Text $prevChar, Text $a, Text $target, Text $nextChar) {
+        $text->replace('{ (\w?) (\*\*|__) (?=\S) (.+?[*_]*) (?<=\S) \2 (\w?) }sx', function (ElementLiteral $w, ElementLiteral $prevChar, ElementLiteral $a, ElementLiteral $target, ElementLiteral $nextChar) {
             if (!$prevChar->isEmpty() && !$nextChar->isEmpty() && $target->contains(' ')) {
                 $this->getEmitter()->emit('escape.special_chars', [$w->replaceString(['*', '_'], ['\\*', '\\_'])]);
 
@@ -53,16 +53,16 @@ class InlineStyleExtension implements ExtensionInterface, RendererAwareInterface
     }
 
     /**
-     * @param Text $text
+     * @param ElementLiteral $text
      */
-    public function processItalic(Text $text)
+    public function processItalic(ElementLiteral $text)
     {
         if (!$text->contains('*') && !$text->contains('_')) {
             return;
         }
 
         /** @noinspection PhpUnusedParameterInspection */
-        $text->replace('{ (\w?) (\*|_) (?=\S) (.+?) (?<=\S) \2 (\w?) }sx', function (Text $w, Text $prevChar, Text $a, Text $target, Text $nextChar) {
+        $text->replace('{ (\w?) (\*|_) (?=\S) (.+?) (?<=\S) \2 (\w?) }sx', function (ElementLiteral $w, ElementLiteral $prevChar, ElementLiteral $a, ElementLiteral $target, ElementLiteral $nextChar) {
             if (!$prevChar->isEmpty() && !$nextChar->isEmpty() && $target->contains(' ')) {
                 $this->getEmitter()->emit('escape.special_chars', [$w->replaceString(['*', '_'], ['\\*', '\\_'])]);
 

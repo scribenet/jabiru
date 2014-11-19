@@ -2,7 +2,7 @@
 
 namespace Scribe\Jabiru\Extension\Core;
 
-use Scribe\Jabiru\Common\Text;
+use Scribe\Jabiru\Component\Element\ElementLiteral;
 use Scribe\Jabiru\Extension\ExtensionInterface;
 use Scribe\Jabiru\Markdown;
 
@@ -51,7 +51,7 @@ class HtmlBlockExtension implements ExtensionInterface
      * @param Text  $text
      * @param array $options
      */
-    public function hashHtmlBlocks(Text $text, array $options = array())
+    public function hashHtmlBlocks(ElementLiteral $text, array $options = array())
     {
         $lessThanTab = $options['tabWidth'] - 1;
 
@@ -68,7 +68,7 @@ class HtmlBlockExtension implements ExtensionInterface
 
         /** @noinspection PhpUnusedParameterInspection */
         $callback = function ($whole, $html, $tag) {
-            $hash = $this->markdown->getHashRegistry()->register($html);
+            $hash = $this->markdown->getHashCollection()->register($html);
 
             return "\n\n" . $hash . "\n\n";
         };
@@ -134,11 +134,11 @@ class HtmlBlockExtension implements ExtensionInterface
     }
 
     /**
-     * @param Text $text
+     * @param ElementLiteral $text
      */
-    public function unhashHtmlBlocks(Text $text)
+    public function unhashHtmlBlocks(ElementLiteral $text)
     {
-        foreach ($this->markdown->getHashRegistry() as $hash => $html) {
+        foreach ($this->markdown->getHashCollection() as $hash => $html) {
             $text->replaceString($hash, trim($html));
         }
     }

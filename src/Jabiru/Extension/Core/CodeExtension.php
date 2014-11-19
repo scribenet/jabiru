@@ -2,7 +2,7 @@
 
 namespace Scribe\Jabiru\Extension\Core;
 
-use Scribe\Jabiru\Common\Text;
+use Scribe\Jabiru\Component\Element\ElementLiteral;
 use Scribe\Jabiru\Extension\ExtensionInterface;
 use Scribe\Jabiru\Renderer\RendererAwareInterface;
 use Scribe\Jabiru\Renderer\RendererAwareTrait;
@@ -41,7 +41,7 @@ class CodeExtension implements ExtensionInterface, RendererAwareInterface
      * @param Text  $text
      * @param array $options
      */
-    public function processCodeBlock(Text $text, array $options = array())
+    public function processCodeBlock(ElementLiteral $text, array $options = array())
     {
         /** @noinspection PhpUnusedParameterInspection */
         $text->replace('{
@@ -53,7 +53,7 @@ class CodeExtension implements ExtensionInterface, RendererAwareInterface
               )+
             )
             (?:(?=^[ ]{0,' . $options['tabWidth'] . '}\S)|\Z) # Lookahead for non-space at line-start, or end of doc
-        }mx', function (Text $whole, Text $code) {
+        }mx', function (ElementLiteral $whole, ElementLiteral $code) {
             $this->markdown->emit('outdent', array($code));
             $code->escapeHtml(ENT_NOQUOTES);
             $this->markdown->emit('detab', array($code));
@@ -65,9 +65,9 @@ class CodeExtension implements ExtensionInterface, RendererAwareInterface
     }
 
     /**
-     * @param Text $text
+     * @param ElementLiteral $text
      */
-    public function processCodeSpan(Text $text)
+    public function processCodeSpan(ElementLiteral $text)
     {
         if (!$text->contains('`')) {
             return;
@@ -83,7 +83,7 @@ class CodeExtension implements ExtensionInterface, RendererAwareInterface
             (?<!`)
             \1          # Matching closer
             (?!`)
-        }x', function (Text $w, Text $b, Text $code) use ($chars) {
+        }x', function (ElementLiteral $w, ElementLiteral $b, ElementLiteral $code) use ($chars) {
             $code->trim()->escapeHtml(ENT_NOQUOTES);
             $code->replace(sprintf('/(?<!\\\\)(%s)/', $chars), '\\\\${1}');
 

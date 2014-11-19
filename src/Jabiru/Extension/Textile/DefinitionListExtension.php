@@ -2,8 +2,8 @@
 
 namespace Scribe\Jabiru\Extension\Textile;
 
-use Scribe\Jabiru\Common\Element;
-use Scribe\Jabiru\Common\Text;
+use Scribe\Jabiru\Component\Element\Element;
+use Scribe\Jabiru\Component\Element\ElementLiteral;
 use Scribe\Jabiru\Event\EmitterAwareInterface;
 use Scribe\Jabiru\Event\EmitterAwareTrait;
 use Scribe\Jabiru\Extension\ExtensionInterface;
@@ -30,9 +30,9 @@ class DefinitionListExtension implements ExtensionInterface, RendererAwareInterf
     }
 
     /**
-     * @param Text $text
+     * @param ElementLiteral $text
      */
-    public function processDefinitionList(Text $text)
+    public function processDefinitionList(ElementLiteral $text)
     {
         $text->replace(
             '{
@@ -48,7 +48,7 @@ class DefinitionListExtension implements ExtensionInterface, RendererAwareInterf
                 ){1,}
                 \n+
             }smx',
-            function (Text $w) {
+            function (ElementLiteral $w) {
                 $this->processListItems($w);
                 $dl = (new Element('dl'))->setInner($w->trim()->wrap("\n", "\n"));
 
@@ -58,9 +58,9 @@ class DefinitionListExtension implements ExtensionInterface, RendererAwareInterf
     }
 
     /**
-     * @param Text $text
+     * @param ElementLiteral $text
      */
-    public function processListItems(Text $text)
+    public function processListItems(ElementLiteral $text)
     {
         /** @noinspection PhpUnusedParameterInspection */
         $text->replace(
@@ -76,7 +76,7 @@ class DefinitionListExtension implements ExtensionInterface, RendererAwareInterf
                 )
                 \n
             }smx',
-            function (Text $w, Text $item, Text $definition, Text $c, Text $dd1, Text $multiLine, Text $dd2 = null) {
+            function (ElementLiteral $w, ElementLiteral $item, ElementLiteral $definition, ElementLiteral $c, ElementLiteral $dd1, ElementLiteral $multiLine, ElementLiteral $dd2 = null) {
                 $dt = (new Element('dt'))->setInner($definition->trim());
                 $dd = (new Element('dd'));
 
@@ -94,9 +94,9 @@ class DefinitionListExtension implements ExtensionInterface, RendererAwareInterf
     }
 
     /**
-     * @param Text $text
+     * @param ElementLiteral $text
      */
-    public function processWikiDefinitionList(Text $text)
+    public function processWikiDefinitionList(ElementLiteral $text)
     {
         $text->replace(
             '{
@@ -106,8 +106,8 @@ class DefinitionListExtension implements ExtensionInterface, RendererAwareInterf
                 ){1,}
                 \n+
             }mx',
-            function (Text $w) {
-                $w->replace('/^;[ \t]*(.+)\n((:[ \t]*.+\n){1,})/m', function (Text $w, Text $item, Text $content) {
+            function (ElementLiteral $w) {
+                $w->replace('/^;[ \t]*(.+)\n((:[ \t]*.+\n){1,})/m', function (ElementLiteral $w, ElementLiteral $item, ElementLiteral $content) {
                     $dt = (new Element('dt'))->setInner($item);
                     $lines = $content->trim()->ltrim(':')->split('/\n?^:[ \t]*/m', PREG_SPLIT_NO_EMPTY);
 

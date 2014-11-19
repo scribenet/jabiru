@@ -2,8 +2,9 @@
 
 namespace Scribe\Jabiru;
 
-use Scribe\Jabiru\Common\Collection;
-use Scribe\Jabiru\Common\Text;
+use Scribe\Jabiru\Component\Collection\Collection;
+use Scribe\Jabiru\Component\Collection\HashCollection;
+use Scribe\Jabiru\Component\Element\ElementLiteral;
 use Scribe\Jabiru\Event\EmitterAwareInterface;
 use Scribe\Jabiru\Event\EmitterInterface;
 use Scribe\Jabiru\Event\EmitterTrait;
@@ -30,9 +31,9 @@ class Markdown implements EmitterInterface
     private $options;
 
     /**
-     * @var HashRegistry
+     * @var HashCollection
      */
-    private $hashRegistry;
+    private $hashCollection;
 
     /**
      * @var Collection
@@ -56,7 +57,7 @@ class Markdown implements EmitterInterface
      * @param Common\Text                $rawContent [optional] The whole content
      * @param array                      $options    [optional] An array of options
      */
-    public function __construct(RendererInterface $renderer, Text $rawContent = null, array $options = array())
+    public function __construct(RendererInterface $renderer, ElementLiteral $rawContent = null, array $options = array())
     {
         if ($renderer instanceof EmitterAwareInterface) {
             $renderer->setEmitter($this);
@@ -64,20 +65,20 @@ class Markdown implements EmitterInterface
 
         $this->renderer      = $renderer;
         $this->options       = $this->parseOptions($options);
-        $this->hashRegistry  = new HashRegistry();
+        $this->hashCollection  = new HashCollection();
         $this->urlRegistry   = new Collection();
         $this->titleRegistry = new Collection();
         $this->rawContent    = $rawContent;
     }
 
     /**
-     * Returns HashRegistry
+     * Returns HashCollection
      *
-     * @return HashRegistry
+     * @return HashCollection
      */
-    public function getHashRegistry()
+    public function getHashCollection()
     {
-        return $this->hashRegistry;
+        return $this->hashCollection;
     }
 
     /**

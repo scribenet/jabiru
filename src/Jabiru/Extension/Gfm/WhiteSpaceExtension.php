@@ -2,7 +2,7 @@
 
 namespace Scribe\Jabiru\Extension\Gfm;
 
-use Scribe\Jabiru\Common\Text;
+use Scribe\Jabiru\Component\Element\ElementLiteral;
 use Scribe\Jabiru\Extension\ExtensionInterface;
 use Scribe\Jabiru\Markdown;
 
@@ -31,11 +31,11 @@ class WhiteSpaceExtension implements ExtensionInterface
      * We find this to be the cause of a huge number of unintentional formatting errors.
      * GFM treats newlines in paragraph-like content as real line breaks, which is probably what you intended.
      *
-     * @param Text $text
+     * @param ElementLiteral $text
      */
-    public function processHardBreak(Text $text)
+    public function processHardBreak(ElementLiteral $text)
     {
-        $text->replace('/^[\S\<][^\n]*\n+(?!( |\t)*<)/m', function (Text $w) {
+        $text->replace('/^[\S\<][^\n]*\n+(?!( |\t)*<)/m', function (ElementLiteral $w) {
             if ($w->match('/\n{2}/') || $w->match('/  \n/')) {
                 return $w;
             }

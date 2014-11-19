@@ -2,7 +2,7 @@
 
 namespace Scribe\Jabiru\Extension\Gfm;
 
-use Scribe\Jabiru\Common\Text;
+use Scribe\Jabiru\Component\Element\ElementLiteral;
 use Scribe\Jabiru\Extension\ExtensionInterface;
 use Scribe\Jabiru\Markdown;
 
@@ -23,14 +23,14 @@ class UrlAutoLinkExtension implements ExtensionInterface
     /**
      * Turn standard URL into markdown URL
      *
-     * @param Text $text
+     * @param ElementLiteral $text
      */
-    public function processStandardUrl(Text $text)
+    public function processStandardUrl(ElementLiteral $text)
     {
         $hashes = array();
 
         // escape <code>
-        $text->replace('{<code>.*?</code>}m', function (Text $w) use (&$hashes) {
+        $text->replace('{<code>.*?</code>}m', function (ElementLiteral $w) use (&$hashes) {
             $md5 = md5($w);
             $hashes[$md5] = $w;
 
@@ -40,7 +40,7 @@ class UrlAutoLinkExtension implements ExtensionInterface
         $text->replace('{(?<!]\(|"|<|\[)((?:https?|ftp)://[^\'">\s]+)(?!>|\"|\])}', '<\1>');
 
         /** @noinspection PhpUnusedParameterInspection */
-        $text->replace('/\{gfm-extraction-([0-9a-f]{32})\}/m', function (Text $w, Text $md5) use (&$hashes) {
+        $text->replace('/\{gfm-extraction-([0-9a-f]{32})\}/m', function (ElementLiteral $w, ElementLiteral $md5) use (&$hashes) {
             return $hashes[(string)$md5];
         });
     }

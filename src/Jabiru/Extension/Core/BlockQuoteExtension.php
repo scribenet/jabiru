@@ -2,7 +2,7 @@
 
 namespace Scribe\Jabiru\Extension\Core;
 
-use Scribe\Jabiru\Common\Text;
+use Scribe\Jabiru\Component\Element\ElementLiteral;
 use Scribe\Jabiru\Extension\ExtensionInterface;
 use Scribe\Jabiru\Renderer\RendererAwareInterface;
 use Scribe\Jabiru\Renderer\RendererAwareTrait;
@@ -37,9 +37,9 @@ class BlockQuoteExtension implements ExtensionInterface, RendererAwareInterface
     }
 
     /**
-     * @param Text $text
+     * @param ElementLiteral $text
      */
-    public function processBlockQuote(Text $text)
+    public function processBlockQuote(ElementLiteral $text)
     {
         $text->replace('{
           (?:
@@ -50,13 +50,13 @@ class BlockQuoteExtension implements ExtensionInterface, RendererAwareInterface
               \n*            # blanks
             )+
           )
-        }mx', function (Text $bq) {
+        }mx', function (ElementLiteral $bq) {
             $bq->replace('/^[ \t]*>[ \t]?/m', '');
             $bq->replace('/^[ \t]+$/m', '');
 
             $this->markdown->emit('block', array($bq));
 
-            $bq->replace('|\s*<pre>.+?</pre>|s', function (Text $pre) {
+            $bq->replace('|\s*<pre>.+?</pre>|s', function (ElementLiteral $pre) {
                 return $pre->replace('/^  /m', '');
             });
 

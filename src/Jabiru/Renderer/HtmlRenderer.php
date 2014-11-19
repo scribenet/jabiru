@@ -2,8 +2,8 @@
 
 namespace Scribe\Jabiru\Renderer;
 
-use Scribe\Jabiru\Common\Element;
-use Scribe\Jabiru\Common\Text;
+use Scribe\Jabiru\Component\Element\Element;
+use Scribe\Jabiru\Component\Element\ElementLiteral;
 use Scribe\Jabiru\Event\EmitterAwareInterface;
 use Scribe\Jabiru\Event\EmitterAwareTrait;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -62,7 +62,7 @@ class HtmlRenderer implements RendererInterface, EmitterAwareInterface
      */
     public function renderCodeBlock($content, array $options = array())
     {
-        $content = ($content instanceof Text ? $content : new Text($content));
+        $content = ($content instanceof Text ? $content : new ElementLiteral($content));
 
         $options = $this
             ->createResolver()
@@ -146,7 +146,7 @@ class HtmlRenderer implements RendererInterface, EmitterAwareInterface
      */
     public function renderList($content, array $options = array())
     {
-        $content = ($content instanceof Text ? $content : new Text($content));
+        $content = ($content instanceof Text ? $content : new ElementLiteral($content));
 
         $options = $this->createResolver()
             ->setRequired(['type'])

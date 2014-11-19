@@ -2,7 +2,7 @@
 
 namespace Scribe\Jabiru\Extension\Core;
 
-use Scribe\Jabiru\Common\Text;
+use Scribe\Jabiru\Component\Element\ElementLiteral;
 use Scribe\Jabiru\Exception\SyntaxError;
 use Scribe\Jabiru\Extension\ExtensionInterface;
 use Scribe\Jabiru\Renderer\RendererAwareInterface;
@@ -41,10 +41,10 @@ class ImageExtension implements ExtensionInterface, RendererAwareInterface
     /**
      * Handle reference-style labeled images: ![alt text][id]
      *
-     * @param Text  $text
+     * @param ElementLiteral  $text
      * @param array $options
      */
-    public function processReferencedImage(Text $text, array $options = array())
+    public function processReferencedImage(ElementLiteral $text, array $options = array())
     {
         if (!$text->contains('![')) {
             return;
@@ -66,7 +66,7 @@ class ImageExtension implements ExtensionInterface, RendererAwareInterface
                   \]
                 #)
             }xs',
-            function (Text $whole, Text $alt, Text $id = null) use ($options) {
+            function (ElementLiteral $whole, ElementLiteral $alt, ElementLiteral $id = null) use ($options) {
                 $result = null;
 
                 if ($id->lower() == '') {
@@ -80,11 +80,11 @@ class ImageExtension implements ExtensionInterface, RendererAwareInterface
                 );
 
                 if ($this->markdown->getUrlRegistry()->exists($id)) {
-                    $url = new Text($this->markdown->getUrlRegistry()->get($id));
+                    $url = new ElementLiteral($this->markdown->getUrlRegistry()->get($id));
                     $url->escapeHtml();
 
                     if ($this->markdown->getTitleRegistry()->exists($id)) {
-                        $title = new Text($this->markdown->getTitleRegistry()->get($id));
+                        $title = new ElementLiteral($this->markdown->getTitleRegistry()->get($id));
                         $attr['title'] = $title->escapeHtml();
                     }
 
@@ -106,10 +106,10 @@ class ImageExtension implements ExtensionInterface, RendererAwareInterface
     /**
      * handle inline images:  ![alt text](url "optional title")
      *
-     * @param Text  $text
+     * @param ElementLiteral  $text
      * @param array $options
      */
-    public function processInlineImage(Text $text, array $options = array())
+    public function processInlineImage(ElementLiteral $text, array $options = array())
     {
         if (!$text->contains('![')) {
             return;
@@ -136,13 +136,13 @@ class ImageExtension implements ExtensionInterface, RendererAwareInterface
                 )
             }xs',
             function (
-                Text $w,
-                Text $whole,
-                Text $alt,
-                Text $url,
-                Text $a = null,
-                Text $q = null,
-                Text $title = null
+                ElementLiteral $w,
+                ElementLiteral $whole,
+                ElementLiteral $alt,
+                ElementLiteral $url,
+                ElementLiteral $a = null,
+                ElementLiteral $q = null,
+                ElementLiteral $title = null
             ) use ($options) {
                 $this->markdown->emit('escape.special_chars', [$alt->replace('/(?<!\\\\)_/', '\\\\_')]);
 

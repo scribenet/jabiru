@@ -2,9 +2,9 @@
 
 namespace Scribe\Jabiru\Extension\Gfm;
 
-use Scribe\Jabiru\Common\Collection;
-use Scribe\Jabiru\Common\Element;
-use Scribe\Jabiru\Common\Text;
+use Scribe\Jabiru\Component\Collection\Collection;
+use Scribe\Jabiru\Component\Element\Element;
+use Scribe\Jabiru\Component\Element\ElementLiteral;
 use Scribe\Jabiru\Exception\SyntaxError;
 use Scribe\Jabiru\Extension\ExtensionInterface;
 use Scribe\Jabiru\Markdown;
@@ -58,7 +58,7 @@ class TableExtension implements ExtensionInterface, RendererAwareInterface
      * @param Text  $text
      * @param array $options
      */
-    public function processTable(Text $text, array $options = array())
+    public function processTable(ElementLiteral $text, array $options = array())
     {
         $lessThanTab = $options['tabWidth'] - 1;
 
@@ -75,7 +75,7 @@ class TableExtension implements ExtensionInterface, RendererAwareInterface
                 (?:\|?)                         #  optional outer pipe
             )\n
             (.*?)\n{2,}                         #3 table body
-        /smx', function (Text $w, Text $header, Text $rule, Text $body) use ($options) {
+        /smx', function (ElementLiteral $w, ElementLiteral $header, ElementLiteral $rule, ElementLiteral $body) use ($options) {
             // Escape pipe to hash, so you can include pipe in cells by escaping it like this: `\\|`
             $this->escapePipes($header);
             $this->escapePipes($rule);
@@ -128,7 +128,7 @@ class TableExtension implements ExtensionInterface, RendererAwareInterface
         $table = new Element('table');
         $table->setInner("\n" . $tHead . "\n" . $tBody . "\n");
 
-        return new Text($table->render());
+        return new ElementLiteral($table->render());
     }
 
     /**
@@ -141,7 +141,7 @@ class TableExtension implements ExtensionInterface, RendererAwareInterface
         /* @var Collection|Tag[] $baseTags */
         $baseTags = new Collection();
 
-        $rules->each(function (Text $cell) use (&$baseTags) {
+        $rules->each(function (ElementLiteral $cell) use (&$baseTags) {
             $cell->trim();
             $tag = new Element('td');
 
@@ -165,12 +165,12 @@ class TableExtension implements ExtensionInterface, RendererAwareInterface
      *
      * @return Collection
      */
-    protected function parseHeader(Text $header, Collection $baseTags)
+    protected function parseHeader(ElementLiteral $header, Collection $baseTags)
     {
         $cells = new Collection();
 
         try {
-            $header->split('/\|/')->each(function (Text $cell, $index) use ($baseTags, &$cells) {
+            $header->split('/\|/')->each(function (ElementLiteral $cell, $index) use ($baseTags, &$cells) {
                 /* @var Tag $tag */
                 $tag = clone $baseTags->get($index);
                 $tag->setName('th');
@@ -202,17 +202,17 @@ class TableExtension implements ExtensionInterface, RendererAwareInterface
      *
      * @return Collection
      */
-    protected function parseBody(Text $body, Collection $baseTags)
+    protected function parseBody(ElementLiteral $body, Collection $baseTags)
     {
         $rows = new Collection();
 
-        $body->split('/\n/')->each(function (Text $row, $index) use ($baseTags, &$rows) {
+        $body->split('/\n/')->each(function (ElementLiteral $row, $index) use ($baseTags, &$rows) {
             $row->trim()->trim('|');
 
             $cells = new Collection();
 
             try {
-                $row->split('/\|/')->each(function (Text $cell, $index) use (&$baseTags, &$cells) {
+                $row->split('/\|/')->each(function (ElementLiteral $cell, $index) use (&$baseTags, &$cells) {
                     /* @var Tag $tag */
                     $tag = clone $baseTags->get($index);
                     $this->markdown->emit('inline', array($cell));
@@ -241,17 +241,17 @@ class TableExtension implements ExtensionInterface, RendererAwareInterface
     }
 
     /**
-     * @param Text $text
+     * @param ElementLiteral $text
      */
-    protected function escapePipes(Text $text)
+    protected function escapePipes(ElementLiteral $text)
     {
         $text->replaceString('\\|', $this->hash);
     }
 
     /**
-     * @param Text $text
+     * @param ElementLiteral $text
      */
-    protected function unescapePipes(Text $text)
+    protected function unescapePipes(ElementLiteral $text)
     {
         $text->replaceString($this->hash, '|');
     }

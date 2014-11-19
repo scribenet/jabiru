@@ -2,7 +2,7 @@
 
 namespace Scribe\Jabiru\Exception;
 
-use Scribe\Jabiru\Common\Text;
+use Scribe\Jabiru\Component\Element\ElementLiteral;
 use Scribe\Jabiru\Extension\ExtensionInterface;
 use Scribe\Jabiru\Markdown;
 
@@ -47,7 +47,7 @@ class SyntaxError extends MarkdownException
     public function __construct(
         $message = '',
         ExtensionInterface $extension = null,
-        Text $text = null,
+        ElementLiteral $text = null,
         Markdown $markdown = null,
         \Exception $previous = null
     ) {
@@ -71,7 +71,7 @@ class SyntaxError extends MarkdownException
         $rawContent->replaceString("\r", "\n");
         $lines = $rawContent->split('/\n/');
 
-        $lines->each(function (Text $line, $index) use ($pattern) {
+        $lines->each(function (ElementLiteral $line, $index) use ($pattern) {
             if ($line->match($pattern)) {
                 $this->markdownLineNo = ($index + 1);
 

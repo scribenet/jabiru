@@ -2,7 +2,7 @@
 
 namespace Scribe\Jabiru\Extension\Core;
 
-use Scribe\Jabiru\Common\Text;
+use Scribe\Jabiru\Component\Element\ElementLiteral;
 use Scribe\Jabiru\Extension\ExtensionInterface;
 use Scribe\Jabiru\Renderer\RendererAwareInterface;
 use Scribe\Jabiru\Renderer\RendererAwareTrait;
@@ -35,9 +35,9 @@ class ParagraphExtension implements ExtensionInterface, RendererAwareInterface
     }
 
     /**
-     * @param Text $text
+     * @param ElementLiteral $text
      */
-    public function buildParagraph(Text $text)
+    public function buildParagraph(ElementLiteral $text)
     {
         $parts = $text
             ->replace('/\A\n+/', '')
@@ -45,8 +45,8 @@ class ParagraphExtension implements ExtensionInterface, RendererAwareInterface
             //->replace('/\n+$/', '')
             ->split('/\n{2,}/', PREG_SPLIT_NO_EMPTY);
 
-        $parts->apply(function (Text $part) {
-            if (!$this->markdown->getHashRegistry()->exists($part)) {
+        $parts->apply(function (ElementLiteral $part) {
+            if (!$this->markdown->getHashCollection()->exists($part)) {
                 $this->markdown->emit('inline', array($part));
                 $part->replace('/^([ \t]*)/', '');
 
@@ -56,9 +56,9 @@ class ParagraphExtension implements ExtensionInterface, RendererAwareInterface
             return $part;
         });
 
-        $parts->apply(function (Text $part) {
-            if ($this->markdown->getHashRegistry()->exists($part)) {
-                $part->setString(trim($this->markdown->getHashRegistry()->get($part)));
+        $parts->apply(function (ElementLiteral $part) {
+            if ($this->markdown->getHashCollection()->exists($part)) {
+                $part->setString(trim($this->markdown->getHashCollection()->get($part)));
             }
 
             return $part;

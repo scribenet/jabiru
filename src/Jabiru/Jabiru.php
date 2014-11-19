@@ -2,8 +2,8 @@
 
 namespace Scribe\Jabiru;
 
-use Scribe\Jabiru\Common\Collection;
-use Scribe\Jabiru\Common\Text;
+use Scribe\Jabiru\Component\Collection\Collection;
+use Scribe\Jabiru\Component\Element\ElementLiteral;
 use Scribe\Jabiru\Event\EmitterAwareInterface;
 use Scribe\Jabiru\Extension\Core;
 use Scribe\Jabiru\Extension\ExtensionInterface;
@@ -57,7 +57,7 @@ class Jabiru
      */
     public function render($text, array $options = array())
     {
-        $text = new Text($text);
+        $text = new ElementLiteral($text);
         $markdown = new Markdown($this->renderer, $text, $options);
 
         $this->registerExtensions($markdown);

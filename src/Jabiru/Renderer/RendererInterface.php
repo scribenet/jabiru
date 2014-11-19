@@ -2,8 +2,8 @@
 
 namespace Scribe\Jabiru\Renderer;
 
-use Scribe\Jabiru\Common\Element;
-use Scribe\Jabiru\Common\Text;
+use Scribe\Jabiru\Component\Element\Element;
+use Scribe\Jabiru\Component\Element\ElementLiteral;
 
 /**
  * RendererInterface must be implemented by classes that renders result of Markdown
@@ -113,7 +113,7 @@ interface RendererInterface
     /**
      * @api
      *
-     * @param string|Text $text
+     * @param string|ElementLiteral $text
      * @param array       $options
      *
      * @return string
@@ -123,7 +123,7 @@ interface RendererInterface
     /**
      * @api
      *
-     * @param string|Text $text
+     * @param string|ElementLiteral $text
      * @param array       $options
      *
      * @return string

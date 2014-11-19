@@ -2,8 +2,8 @@
 
 namespace Scribe\Jabiru\Extension\Gfm;
 
-use Scribe\Jabiru\Common\Element;
-use Scribe\Jabiru\Common\Text;
+use Scribe\Jabiru\Component\Element\Element;
+use Scribe\Jabiru\Component\Element\ElementLiteral;
 use Scribe\Jabiru\Extension\Core\ListExtension;
 
 /**
@@ -17,7 +17,7 @@ class TaskListExtension extends ListExtension
     /**
      * {@inheritdoc}
      */
-    public function processListItems(Text $list, array $options = array(), $level = 0)
+    public function processListItems(ElementLiteral $list, array $options = array(), $level = 0)
     {
         $list->replace('/\n{2,}\z/', "\n");
 
@@ -29,16 +29,16 @@ class TaskListExtension extends ListExtension
             (([ ]*(\[([ ]|x)\]) [ \t]+)?(?s:.+?)  # list item text = $4, checkbox = $5, checked = %6
             (\n{1,2}))
             (?= \n* (\z | \2 (' . $this->getPattern() . ') [ \t]+))
-        }mx', function (Text $w, Text $leadingLine, Text $ls, Text $m, Text $item, Text $checkbox, Text $check) use ($options, $level) {
+        }mx', function (ElementLiteral $w, ElementLiteral $leadingLine, ElementLiteral $ls, ElementLiteral $m, ElementLiteral $item, ElementLiteral $checkbox, ElementLiteral $check) use ($options, $level) {
             if (!$checkbox->isEmpty()) {
-                $item->replace('/^\[( |x)\]/', function (Text $w, Text $check) {
+                $item->replace('/^\[( |x)\]/', function (ElementLiteral $w, ElementLiteral $check) {
                     $attr = array('type' => 'checkbox');
 
                     if ($check == 'x') {
                         $attr['checked'] = 'checked';
                     }
 
-                    return $this->getRenderer()->renderTag('input', new Text(), Element::TYPE_INLINE, array('attr' => $attr));
+                    return $this->getRenderer()->renderTag('input', new ElementLiteral(), Element::TYPE_INLINE, array('attr' => $attr));
                 });
             }
 

@@ -1,6 +1,8 @@
 <?php
 
-namespace Scribe\Jabiru\Common;
+namespace Scribe\Jabiru\Component\Element;
+
+use Scribe\Jabiru\Component\Collection\Collection;
 
 /**
  * HTML/XHTML/XML tag definition
@@ -57,7 +59,7 @@ class Element
     {
         $this->name         = $name;
         $this->attributes   = new Collection();
-        $this->innerLiteral = new Text();
+        $this->innerLiteral = new ElementLiteral();
         $this->innerObject  = null;
     }
 
@@ -73,7 +75,7 @@ class Element
         if ($inner instanceof Tag) {
             $this->innerObject = $inner;
         } else if (!$inner instanceof Text) {
-            $this->innerLiteral = new Text($inner);
+            $this->innerLiteral = new ElementLiteral($inner);
         } else {
             $this->innerLiteral = $inner;
         }
@@ -89,7 +91,7 @@ class Element
     public function getInner()
     {
         if ($this->innerObject instanceof Tag) {
-            return new Text($this->innerObject->render());
+            return new ElementLiteral($this->innerObject->render());
         }
 
         return $this->innerLiteral;
@@ -236,7 +238,7 @@ class Element
      */
     public function render()
     {
-        $html = new Text();
+        $html = new ElementLiteral();
         $html
             ->append('<')
             ->append($this->getName())

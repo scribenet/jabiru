@@ -1,8 +1,8 @@
 <?php
 
-namespace Scribe\Jabiru\Tests\Jabiru\Common;
+namespace Scribe\Jabiru\Tests\Jabiru\Component\Element;
 
-use Scribe\Jabiru\Common\Element;
+use Scribe\Jabiru\Component\Element\Element;
 
 class ElementTest extends \PHPUnit_Framework_TestCase
 {
@@ -13,7 +13,7 @@ class ElementTest extends \PHPUnit_Framework_TestCase
         $tag->setInner('content');
         $text = $tag->getInner();
 
-        $this->assertInstanceOf('\Scribe\\Jabiru\\Common\\Text', $text);
+        $this->assertInstanceOf('\Scribe\\Jabiru\\Component\\Element\\ElementLiteral', $text);
     }
 
     public function testRenderTag()

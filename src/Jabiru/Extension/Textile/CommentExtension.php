@@ -2,7 +2,7 @@
 
 namespace Scribe\Jabiru\Extension\Textile;
 
-use Scribe\Jabiru\Common\Text;
+use Scribe\Jabiru\Component\Element\ElementLiteral;
 use Scribe\Jabiru\Extension\ExtensionInterface;
 use Scribe\Jabiru\Markdown;
 
@@ -21,9 +21,9 @@ class CommentExtension implements ExtensionInterface
     }
 
     /**
-     * @param Text $text
+     * @param ElementLiteral $text
      */
-    public function processComment(Text $text)
+    public function processComment(ElementLiteral $text)
     {
         $text->replace('/^###\.[ \t]*(.+?)\n{2,}/m', "\n\n");
     }

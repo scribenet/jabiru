@@ -1,9 +1,9 @@
 <?php
 
-namespace Scribe\Jabiru\Tests\Jabiru\Common;
+namespace Scribe\Jabiru\Tests\Jabiru\Component\Collection;
 
-use Scribe\Jabiru\Common\Collection;
-use Scribe\Jabiru\Common\Text;
+use Scribe\Jabiru\Component\Collection\Collection;
+use Scribe\Jabiru\Component\Element\ElementLiteral;
 
 /**
  * Tests Scribe\Jabiru\Common\Collection
@@ -37,13 +37,13 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testContains()
     {
-        $text = new Text('item1');
+        $text = new ElementLiteral('item1');
 
         $collection = new Collection();
         $collection->add($text);
 
         $this->assertTrue($collection->contains($text));
-        $this->assertFalse($collection->contains(new Text('item1')));
+        $this->assertFalse($collection->contains(new ElementLiteral('item1')));
     }
 
     public function testEach()

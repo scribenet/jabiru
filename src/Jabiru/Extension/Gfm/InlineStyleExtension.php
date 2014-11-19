@@ -2,8 +2,8 @@
 
 namespace Scribe\Jabiru\Extension\Gfm;
 
-use Scribe\Jabiru\Common\Element;
-use Scribe\Jabiru\Common\Text;
+use Scribe\Jabiru\Component\Element\Element;
+use Scribe\Jabiru\Component\Element\ElementLiteral;
 use Scribe\Jabiru\Extension\ExtensionInterface;
 use Scribe\Jabiru\Markdown;
 use Scribe\Jabiru\Renderer\RendererAwareInterface;
@@ -40,19 +40,19 @@ class InlineStyleExtension implements ExtensionInterface, RendererAwareInterface
      * It is not reasonable to italicize just part of a word, especially when you're dealing with code and names often
      * appear with multiple underscores. Therefore, GFM ignores multiple underscores in words.
      *
-     * @param Text $text
+     * @param ElementLiteral $text
      */
-    public function processMultipleUnderScore(Text $text)
+    public function processMultipleUnderScore(ElementLiteral $text)
     {
-        $text->replace('{<pre>.*?</pre>}m', function (Text $w) {
+        $text->replace('{<pre>.*?</pre>}m', function (ElementLiteral $w) {
             $md5 = md5($w);
             $this->hashes[$md5] = $w;
 
             return "{gfm-extraction-$md5}";
         });
 
-        $text->replace('/^(?! {4}|\t)(\[?\w+_\w+_\w[\w_]*\]?)/', function (Text $w, Text $word) {
-            $underscores = $word->split('//')->filter(function (Text $item) {
+        $text->replace('/^(?! {4}|\t)(\[?\w+_\w+_\w[\w_]*\]?)/', function (ElementLiteral $w, ElementLiteral $word) {
+            $underscores = $word->split('//')->filter(function (ElementLiteral $item) {
                 return $item == '_';
             });
 
@@ -64,7 +64,7 @@ class InlineStyleExtension implements ExtensionInterface, RendererAwareInterface
         });
 
         /** @noinspection PhpUnusedParameterInspection */
-        $text->replace('/\{gfm-extraction-([0-9a-f]{32})\}/m', function (Text $w, Text $md5) {
+        $text->replace('/\{gfm-extraction-([0-9a-f]{32})\}/m', function (ElementLiteral $w, ElementLiteral $md5) {
             return "\n\n" . $this->hashes[(string)$md5];
         });
     }
@@ -72,12 +72,12 @@ class InlineStyleExtension implements ExtensionInterface, RendererAwareInterface
     /**
      * Strike-through `~~word~~` to `<del>word</del>`
      *
-     * @param Text $text
+     * @param ElementLiteral $text
      */
-    public function processStrikeThrough(Text $text)
+    public function processStrikeThrough(ElementLiteral $text)
     {
         /** @noinspection PhpUnusedParameterInspection */
-        $text->replace('{ (~~) (?=\S) (.+?) (?<=\S) \1 }sx', function (Text $w, Text $a, Text $target) {
+        $text->replace('{ (~~) (?=\S) (.+?) (?<=\S) \1 }sx', function (ElementLiteral $w, ElementLiteral $a, ElementLiteral $target) {
             return $this->getRenderer()->renderTag('del', $target, Element::TYPE_INLINE);
         });
     }

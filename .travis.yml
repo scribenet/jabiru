@@ -19,7 +19,6 @@ before_script:
   - travis_retry composer update --dev --no-interaction --prefer-source
 
 script:
-  - mkdir -p build/logs
   - phpunit -c phpunit.xml.dist --coverage-clover phpunit-coverage-clover.xml
 
 after_script:

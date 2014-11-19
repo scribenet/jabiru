@@ -1,8 +1,10 @@
 <?php
 
-namespace Scribe\Jabiru\Common;
+namespace Scribe\Jabiru\Component\Element;
 
-class Text implements \Serializable
+use Scribe\Jabiru\Component\Collection\Collection;
+
+class ElementLiteral implements \Serializable
 {
 
     /**
@@ -184,7 +186,7 @@ class Text implements \Serializable
         if (is_callable($replacement)) {
             $this->text = preg_replace_callback($pattern, function ($matches) use ($replacement) {
                 $args = array_map(function ($item) {
-                    return new Text($item);
+                    return new ElementLiteral($item);
                 }, $matches);
 
                 return call_user_func_array($replacement, $args);

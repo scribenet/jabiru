@@ -2,7 +2,7 @@
 
 namespace Scribe\Jabiru\Extension\Core;
 
-use Scribe\Jabiru\Common\Text;
+use Scribe\Jabiru\Component\Element\ElementLiteral;
 use Scribe\Jabiru\Extension\ExtensionInterface;
 use Scribe\Jabiru\Markdown;
 
@@ -36,9 +36,9 @@ class EscaperExtension implements ExtensionInterface
     }
 
     /**
-     * @param Text $text
+     * @param ElementLiteral $text
      */
-    public function escapeSpecialChars(Text $text)
+    public function escapeSpecialChars(ElementLiteral $text)
     {
         foreach ($this->hashes as $char => $hash) {
             $text->replaceString('\\'.$char, $hash);
@@ -46,9 +46,9 @@ class EscaperExtension implements ExtensionInterface
     }
 
     /**
-     * @param Text $text
+     * @param ElementLiteral $text
      */
-    public function escapeAmpsAndBrackets(Text $text)
+    public function escapeAmpsAndBrackets(ElementLiteral $text)
     {
         if ($text->contains('&')) {
             $text->replace('/&(?!#?[xX]?(?:[0-9a-fA-F]+|\w+);)/', '&amp;');
@@ -60,9 +60,9 @@ class EscaperExtension implements ExtensionInterface
     }
 
     /**
-     * @param Text $text
+     * @param ElementLiteral $text
      */
-    public function unescapeSpecialChars(Text $text)
+    public function unescapeSpecialChars(ElementLiteral $text)
     {
         foreach ($this->hashes as $char => $hash) {
             $text->replaceString($hash, $char);

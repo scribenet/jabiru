@@ -2,8 +2,8 @@
 
 namespace Scribe\Jabiru\Extension\Html;
 
-use Scribe\Jabiru\Common\Element;
-use Scribe\Jabiru\Common\Text;
+use Scribe\Jabiru\Component\Element\Element;
+use Scribe\Jabiru\Component\Element\ElementLiteral;
 use Scribe\Jabiru\Extension\ExtensionInterface;
 use Scribe\Jabiru\Markdown;
 
@@ -33,7 +33,7 @@ class AttributesExtension implements ExtensionInterface
         }
 
         $text = null;
-        $tag->getInner()->replace('/(^{([^:\(\)]+)}[ \t]*\n?|(?:[ \t]*|\n?){([^:\(\)]+)}\n*$)/', function (Text $w) use (&$text) {
+        $tag->getInner()->replace('/(^{([^:\(\)]+)}[ \t]*\n?|(?:[ \t]*|\n?){([^:\(\)]+)}\n*$)/', function (ElementLiteral $w) use (&$text) {
             $text = $w->trim()->trim('{}');
 
             return '';
@@ -53,11 +53,11 @@ class AttributesExtension implements ExtensionInterface
     }
 
     /**
-     * @param Text $text
+     * @param ElementLiteral $text
      *
      * @return array
      */
-    protected function parseAttributes(Text $text)
+    protected function parseAttributes(ElementLiteral $text)
     {
         $patterns = [
             'id'    => '/^#([a-zA-Z0-9_-]+)/',

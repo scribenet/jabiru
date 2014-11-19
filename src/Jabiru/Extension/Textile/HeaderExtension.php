@@ -2,7 +2,7 @@
 
 namespace Scribe\Jabiru\Extension\Textile;
 
-use Scribe\Jabiru\Common\Text;
+use Scribe\Jabiru\Component\Element\ElementLiteral;
 use Scribe\Jabiru\Extension\ExtensionInterface;
 use Scribe\Jabiru\Markdown;
 use Scribe\Jabiru\Renderer\RendererAwareInterface;
@@ -27,9 +27,9 @@ class HeaderExtension implements ExtensionInterface, RendererAwareInterface
     }
 
     /**
-     * @param Text $text
+     * @param ElementLiteral $text
      */
-    public function processHeader(Text $text)
+    public function processHeader(ElementLiteral $text)
     {
         $text->replace('{
             ^h([1-6])  #1 Level
@@ -37,7 +37,7 @@ class HeaderExtension implements ExtensionInterface, RendererAwareInterface
             [ \t]*
             (.+)
             [ \t]*\n+
-        }mx', function (Text $w, Text $level, Text $mark, Text $header) {
+        }mx', function (ElementLiteral $w, ElementLiteral $level, ElementLiteral $mark, ElementLiteral $header) {
             $attributes = [];
             switch ((string) $mark) {
                 case '>':

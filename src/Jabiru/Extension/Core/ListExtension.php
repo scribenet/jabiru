@@ -2,7 +2,7 @@
 
 namespace Scribe\Jabiru\Extension\Core;
 
-use Scribe\Jabiru\Common\Text;
+use Scribe\Jabiru\Component\Element\ElementLiteral;
 use Scribe\Jabiru\Event\EmitterAwareInterface;
 use Scribe\Jabiru\Event\EmitterAwareTrait;
 use Scribe\Jabiru\Extension\ExtensionInterface;
@@ -56,7 +56,7 @@ class ListExtension implements ExtensionInterface, RendererAwareInterface, Emitt
      * @param array $options
      * @param int   $level
      */
-    public function processList(Text $text, array $options = array(), $level = 0)
+    public function processList(ElementLiteral $text, array $options = array(), $level = 0)
     {
         $lessThanTab = $options['tabWidth'] - 1;
 
@@ -81,7 +81,7 @@ class ListExtension implements ExtensionInterface, RendererAwareInterface, Emitt
         ';
 
         /** @noinspection PhpUnusedParameterInspection */
-        $callback = function (Text $list, Text $marker) use ($options, $level) {
+        $callback = function (ElementLiteral $list, ElementLiteral $marker) use ($options, $level) {
             $type = preg_match('{' . $this->ul . '}', $marker) ? 'ul' : 'ol';
             $list->replace('/\n{2,}/', "\n\n\n");
             $this->processListItems($list, $options, $level);
@@ -103,7 +103,7 @@ class ListExtension implements ExtensionInterface, RendererAwareInterface, Emitt
      * @param array $options
      * @param int   $level
      */
-    public function processListItems(Text $list, array $options = array(), $level = 0)
+    public function processListItems(ElementLiteral $list, array $options = array(), $level = 0)
     {
         $list->replace('/\n{2,}\z/', "\n");
 
@@ -115,7 +115,7 @@ class ListExtension implements ExtensionInterface, RendererAwareInterface, Emitt
             ((?s:.+?)                             # list item text   = $4
             (\n{1,2}))
             (?= \n* (\z | \2 (' . $this->getPattern() . ') [ \t]+))
-        }mx', function (Text $w, Text $leadingLine, Text $ls, Text $m, Text $item) use ($options, $level) {
+        }mx', function (ElementLiteral $w, ElementLiteral $leadingLine, ElementLiteral $ls, ElementLiteral $m, ElementLiteral $item) use ($options, $level) {
             if ((string)$leadingLine || $item->match('/\n{2,}/')) {
                 $this->markdown->emit('outdent', array($item));
                 $this->markdown->emit('block', array($item));

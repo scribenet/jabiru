@@ -2,8 +2,8 @@
 
 namespace Scribe\Jabiru\Extension\Core;
 
-use Scribe\Jabiru\Common\Collection;
-use Scribe\Jabiru\Common\Text;
+use Scribe\Jabiru\Component\Collection\Collection;
+use Scribe\Jabiru\Component\Element\ElementLiteral;
 use Scribe\Jabiru\Exception\SyntaxError;
 use Scribe\Jabiru\Extension\ExtensionInterface;
 use Scribe\Jabiru\Renderer\RendererAwareInterface;
@@ -45,7 +45,7 @@ class LinkExtension implements ExtensionInterface, RendererAwareInterface
      * @param Text  $text
      * @param array $options
      */
-    public function initialize(Text $text, array $options = array())
+    public function initialize(ElementLiteral $text, array $options = array())
     {
         /** @noinspection PhpUnusedParameterInspection */
         $text->replace('{
@@ -65,7 +65,7 @@ class LinkExtension implements ExtensionInterface, RendererAwareInterface
                 [ \t]*
             )?  # title is optional
             (?:\n+|\Z)
-        }xm', function (Text $whole, Text $id, Text $url, Text $title = null) {
+        }xm', function (ElementLiteral $whole, ElementLiteral $id, ElementLiteral $url, ElementLiteral $title = null) {
             $id->lower();
             $this->markdown->emit('escape.special_chars', [$url->replace('/(?<!\\\\)_/', '\\\\_')]);
             $this->markdown->getUrlRegistry()->set($id, htmlspecialchars($url, ENT_QUOTES, 'UTF-8', false));
@@ -84,7 +84,7 @@ class LinkExtension implements ExtensionInterface, RendererAwareInterface
      * @param Text  $text
      * @param array $options
      */
-    public function processReferencedLink(Text $text, array $options = array())
+    public function processReferencedLink(ElementLiteral $text, array $options = array())
     {
         if (!$text->contains('[')) {
             return;
@@ -104,15 +104,15 @@ class LinkExtension implements ExtensionInterface, RendererAwareInterface
                 (.*?)       # id = $3
               \]
             #)
-        }xs', function (Text $whole, Text $linkText, Text $id = null) use ($options) {
+        }xs', function (ElementLiteral $whole, ElementLiteral $linkText, ElementLiteral $id = null) use ($options) {
             if (is_null($id) || (string) $id == '') {
-                $id = new Text($linkText);
+                $id = new ElementLiteral($linkText);
             }
 
             $id->lower();
 
             if ($this->markdown->getUrlRegistry()->exists($id)) {
-                $url = new Text($this->markdown->getUrlRegistry()->get($id));
+                $url = new ElementLiteral($this->markdown->getUrlRegistry()->get($id));
                 $url->escapeHtml()->replace('/(?<!\\\\)_/', '\\\\_');
                 $this->markdown->emit('escape.special_chars', [$url]);
 
@@ -121,7 +121,7 @@ class LinkExtension implements ExtensionInterface, RendererAwareInterface
                 ];
 
                 if ($this->markdown->getTitleRegistry()->exists($id)) {
-                    $title = new Text($this->markdown->getTitleRegistry()->get($id));
+                    $title = new ElementLiteral($this->markdown->getTitleRegistry()->get($id));
                     $linkOptions['title'] = $title->escapeHtml()->getString();
                 }
 
@@ -142,9 +142,9 @@ class LinkExtension implements ExtensionInterface, RendererAwareInterface
     /**
      * Inline-style links: [link text](url "optional title")
      *
-     * @param Text $text
+     * @param ElementLiteral $text
      */
-    public function processInlineLink(Text $text)
+    public function processInlineLink(ElementLiteral $text)
     {
         if (!$text->contains('[')) {
             return;
@@ -167,7 +167,7 @@ class LinkExtension implements ExtensionInterface, RendererAwareInterface
                 )?          # title is optional
               \)
             #)
-        }xs', function (Text $whole, Text $linkText, Text $url, Text $a = null, Text $q = null, Text $title = null) {
+        }xs', function (ElementLiteral $whole, ElementLiteral $linkText, ElementLiteral $url, ElementLiteral $a = null, ElementLiteral $q = null, ElementLiteral $title = null) {
             $url->escapeHtml()->replace('/(?<!\\\\)_/', '\\\\_');
             $this->markdown->emit('escape.special_chars', [$url]);
 
@@ -186,15 +186,15 @@ class LinkExtension implements ExtensionInterface, RendererAwareInterface
     /**
      * Make links out of things like `<http://example.com/>`
      *
-     * @param Text $text
+     * @param ElementLiteral $text
      */
-    public function processAutoLink(Text $text)
+    public function processAutoLink(ElementLiteral $text)
     {
         if (!$text->contains('<')) {
             return;
         }
 
-        $text->replace('{<((?:https?|ftp):[^\'">\s]+)>}', function (Text $w, Text $url) {
+        $text->replace('{<((?:https?|ftp):[^\'">\s]+)>}', function (ElementLiteral $w, ElementLiteral $url) {
             $this->markdown->emit('escape.special_chars', [$url->replace('/(?<!\\\\)_/', '\\\\_')]);
 
             return $this->getRenderer()->renderLink($url, [
@@ -212,7 +212,7 @@ class LinkExtension implements ExtensionInterface, RendererAwareInterface
                 [-a-z0-9]+(\.[-a-z0-9]+)*\.[a-z]+
             )
             >
-        }ix', function (Text $w, Text $address) {
+        }ix', function (ElementLiteral $w, ElementLiteral $address) {
             $address  = "mailto:" . $address;
 
             $encode = array(
