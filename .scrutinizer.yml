@@ -135,3 +135,4 @@ tools:
     php_pdepend: true
     php_analyzer: true
     sensiolabs_security_checker: true
+    external_code_coverage: true

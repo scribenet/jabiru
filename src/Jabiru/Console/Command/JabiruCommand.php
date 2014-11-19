@@ -10,6 +10,10 @@ use Scribe\Jabiru\Extension\Gfm\TableExtension;
 use Scribe\Jabiru\Extension\Gfm\TaskListExtension;
 use Scribe\Jabiru\Extension\Gfm\UrlAutoLinkExtension;
 use Scribe\Jabiru\Extension\Gfm\WhiteSpaceExtension;
+use Scribe\Jabiru\Extension\Html\AttributesExtension;
+use Scribe\Jabiru\Extension\Textile\CommentExtension;
+use Scribe\Jabiru\Extension\Textile\DefinitionListExtension;
+use Scribe\Jabiru\Extension\Textile\HeaderExtension;
 use Scribe\Jabiru\Renderer\XhtmlRenderer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\HelpCommand;
@@ -33,13 +37,15 @@ class JabiruCommand extends Command
         $this
             ->setName('jabiru')
             ->setDescription('Translates markdown into HTML and displays to STDOUT')
-            ->addArgument('file', InputArgument::OPTIONAL, 'The input file')
-            ->addOption('gfm', null, InputOption::VALUE_NONE, 'Activate Gfm extensions')
-            ->addOption('compress', 'c', InputOption::VALUE_NONE, 'Remove whitespace between HTML tags')
-            ->addOption('diagnose', null, InputOption::VALUE_NONE, 'Display events and extensions information')
-            ->addOption('format', 'f', InputOption::VALUE_OPTIONAL, 'Output format (html|xhtml)', 'html')
-            ->addOption('lint', 'l', InputOption::VALUE_NONE, 'Syntax check only (lint)')
             ->setHelp($this->getHelpContent())
+            ->addArgument('file', InputArgument::OPTIONAL, 'The input file')
+            ->addOption('ext-gfm',     null, InputOption::VALUE_NONE,     'Activate Gfm extensions')
+            ->addOption('ext-attrs',   null, InputOption::VALUE_NONE,     'Activate Emmet-style HTML Attribute extensions')
+            ->addOption('ext-textile', null, InputOption::VALUE_NONE,     'Activate Textile extensions')
+            ->addOption('compress',    'c',  InputOption::VALUE_NONE,     'Remove whitespace between HTML tags')
+            ->addOption('diagnose',    null, InputOption::VALUE_NONE,     'Display events and extensions information')
+            ->addOption('format',      'f',  InputOption::VALUE_OPTIONAL, 'Output format (html|xhtml)', 'html')
+            ->addOption('lint',        'l',  InputOption::VALUE_NONE,     'Syntax check only (lint)')
         ;
     }
 
@@ -81,12 +87,8 @@ class JabiruCommand extends Command
     /**
      * Get a markdown content from input
      *
-     * __Warning: Reading from STDIN always fails on Windows__
-     *
-     * @param InputInterface $input
-     *
-     * @throws \InvalidArgumentException
-     *
+     * @param  InputInterface $input
+     * @throws \InvalidArgumentException If passed filename does not exist and no stdin stream is passed
      * @return string
      */
     protected function handleInput(InputInterface $input)
@@ -122,8 +124,7 @@ class JabiruCommand extends Command
     /**
      * Creates an instance of Jabiru
      *
-     * @param InputInterface $input The InputInterface instance
-     *
+     * @param  InputInterface $input The InputInterface instance
      * @return Jabiru|Scribe\Jabiru\Diagnose\Jabiru
      */
     protected function createJabiru(InputInterface $input)
@@ -138,16 +139,30 @@ class JabiruCommand extends Command
             $jabiru->setRenderer(new XhtmlRenderer());
         }
 
-        if ($input->getOption('gfm')) {
-            $jabiru->addExtensions([
+        $extensions = [];
+
+        if ($input->getOption('ext-gfm')) {
+            $extensions = [
                 new FencedCodeBlockExtension(),
                 new InlineStyleExtension(),
                 new TaskListExtension(),
                 new WhiteSpaceExtension(),
                 new TableExtension(),
                 new UrlAutoLinkExtension()
-            ]);
+            ];
         }
+
+        if ($input->getOption('ext-attrs')) {
+            $extensions[] = new AttributesExtension();
+        }
+
+        if ($input->getOption('ext-textile')) {
+            $extensions[] = new HeaderExtension();
+            $extensions[] = new DefinitionListExtension();
+            $extensions[] = new CommentExtension();
+        }
+
+        $jabiru->addExtensions($extensions);
 
         return $jabiru;
     }
@@ -155,9 +170,8 @@ class JabiruCommand extends Command
     /**
      * Runs help command
      *
-     * @param InputInterface  $input  The InputInterface instance
-     * @param OutputInterface $output The OutputInterface instance
-     *
+     * @param  InputInterface  $input  The InputInterface instance
+     * @param  OutputInterface $output The OutputInterface instance
      * @return int
      */
     protected function runHelp(InputInterface $input, OutputInterface $output)
@@ -171,17 +185,16 @@ class JabiruCommand extends Command
     /**
      * Lints the content
      *
-     * @param OutputInterface $output  The OutputInterface instance
-     * @param Jabiru         $jabiru The Jabiru instance
-     * @param string          $content The markdown content
-     *
+     * @param  OutputInterface $output  The OutputInterface instance
+     * @param  Jabiru          $jabiru The Jabiru instance
+     * @param  string          $content The markdown content
      * @return int
      */
     protected function lint(OutputInterface $output, Jabiru $jabiru, $content)
     {
         try {
             $jabiru->render($content, array('strict' => true));
-            $output->writeln('No syntax errors detected.');
+            $output->writeln('<info>No syntax errors detected!</info>');
 
             return 0;
         } catch (SyntaxError $e) {
@@ -194,10 +207,9 @@ class JabiruCommand extends Command
     /**
      * Diagnose
      *
-     * @param OutputInterface           $output
-     * @param Scribe\Jabiru\Diagnose\Jabiru $jabiru
-     * @param string                    $content
-     *
+     * @param  OutputInterface               $output
+     * @param  Scribe\Jabiru\Diagnose\Jabiru $jabiru
+     * @param  string                        $content
      * @return int
      */
     protected function diagnose(OutputInterface $output, Jabiru $jabiru, $content)
@@ -241,7 +253,7 @@ Following command saves result to file
   <info>%command.name% /path/to/file.md > /path/to/file.html</info>
 
 Or using pipe (On Windows it does't work)
-  <info>echo "Markdown is **awesome**" | %command.name%</info>
+  <info>echo "Jabiru is **amazinbg**" | %command.name%</info>
 EOT;
     }
 

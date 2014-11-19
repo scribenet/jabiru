@@ -46,7 +46,7 @@ class JabiruCommandTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * %command.name% --gfm test/Jabiru/Resources/core/markdown-testsuite/2-paragraphs-line.md
+     * %command.name% --ext-gfm test/Jabiru/Resources/core/markdown-testsuite/2-paragraphs-line.md
      */
     public function testCommandWithGfmOption()
     {
@@ -54,7 +54,7 @@ class JabiruCommandTest extends \PHPUnit_Framework_TestCase
         $expected = preg_replace('/\r?\n/', "\n", file_get_contents(__DIR__ . '/../../Resources/core/markdown-testsuite/2-paragraphs-line.out'));
 
         $tester = $this->createCommandTester();
-        $tester->execute(array('file' => $file, '--gfm' => true));
+        $tester->execute(array('file' => $file, '--ext-gfm' => true));
 
         $this->assertEquals($expected, $tester->getDisplay(true));
     }
@@ -94,12 +94,12 @@ class JabiruCommandTest extends \PHPUnit_Framework_TestCase
     {
         $file   = __DIR__ . '/../../Resources/options/strict/gfm/table-invalid-body.md';
         $tester = $this->createCommandTester();
-        $return = $tester->execute(array('file' => $file, '--lint' => true, '--gfm' => true));
+        $return = $tester->execute(array('file' => $file, '--lint' => true, '--ext-gfm' => true));
         $this->assertEquals(1, $return);
 
         $file   = __DIR__ . '/../../Resources/gfm/table-simple.md';
         $tester = $this->createCommandTester();
-        $return = $tester->execute(array('file' => $file, '--lint' => true, '--gfm' => true));
+        $return = $tester->execute(array('file' => $file, '--lint' => true, '--ext-gfm' => true));
         $this->assertEquals(0, $return);
     }
 
@@ -107,7 +107,7 @@ class JabiruCommandTest extends \PHPUnit_Framework_TestCase
     {
         $file = __DIR__ . '/../../Resources/core/markdown-testsuite/2-paragraphs-line.md';
         $tester = $this->createCommandTester();
-        $tester->execute(['file' => $file, '--diagnose' => true, '--gfm' => true]);
+        $tester->execute(['file' => $file, '--diagnose' => true, '--ext-gfm' => true]);
     }
 
     /**

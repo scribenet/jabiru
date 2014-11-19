@@ -22,7 +22,8 @@ script:
   - phpunit -c phpunit.xml.dist --coverage-clover phpunit-coverage-clover.xml
 
 after_script:
-  - php vendor/bin/coveralls
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - vendor/scrutinizer/ocular/bin/ocular code-coverage:upload phpunit-coverage-clover.xml
 
 after_success:
   - composer require --no-update composer/composer:*@dev
