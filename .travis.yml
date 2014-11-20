@@ -26,4 +26,4 @@ script:
   - phpunit -c phpunit.xml.dist --coverage-clover phpunit-coverage-clover.xml
 
 after_script:
-  - vendor/scrutinizer/ocular/bin/ocular code-coverage:upload --format=clover phpunit-coverage-clover.xml
+  - vendor/scrutinizer/ocular/bin/ocular code-coverage:upload --format=php-clover phpunit-coverage-clover.xml
