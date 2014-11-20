@@ -28,10 +28,3 @@ script:
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
   - vendor/scrutinizer/ocular/bin/ocular code-coverage:upload phpunit-coverage-clover.xml
-
-after_success:
-  - composer require --no-update composer/composer:*@dev
-  - composer require scribe/jabiru-markbench:dev-master                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              @dev
-  - vendor/scribe/jabiru-markbench/bin/markbench benchmark --profile=blank
-  - vendor/scribe/jabiru-markbench/bin/markbench benchmark --profile=default
-  - vendor/scribe/jabiru-markbench/bin/markbench benchmark --profile=github-attrs-textile
