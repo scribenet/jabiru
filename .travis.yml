@@ -14,6 +14,10 @@ branches:
   except:
     - gh-pages
 
+notifications:
+  slack:
+    secure: YXEgHrSuEjhLunbMr8dyXZZ5AaAOK9Wc75Rl/HcxCFM4iUoPJj6S7E3EtgW58bYaF1M9xNYwOP5FKD1alMko94xTYdsrf0t3AkpDqll+bEY+EOiixRavRCQUqins9pFK/WK4DmfH28aFnEZBc2dak1pU0dmdJ0Ywzk8rJ8twLNI=
+
 before_script:
   - travis_retry composer self-update
   - travis_retry composer update --dev --no-interaction --prefer-source
@@ -27,7 +31,7 @@ after_script:
 
 after_success:
   - composer require --no-update composer/composer:*@dev
-  - composer require kzykhys/markbench:*@dev
-  - vendor/bin/markbench benchmark --parser=kzykhys/ciconia --profile=blank
-  - vendor/bin/markbench benchmark --parser=kzykhys/ciconia --profile=default
-  - vendor/bin/markbench benchmark --parser=kzykhys/ciconia --profile=github-sample
+  - composer require scribe/jabiru-markbench:dev-master                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              @dev
+  - vendor/scribe/jabiru-markbench/bin/markbench benchmark --profile=blank
+  - vendor/scribe/jabiru-markbench/bin/markbench benchmark --profile=default
+  - vendor/scribe/jabiru-markbench/bin/markbench benchmark --profile=github-attrs-textile
