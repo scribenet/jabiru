@@ -1,6 +1,5 @@
 /vendor/
 /build/
-composer.lock
 composer.phar
 phpunit-coverage-clover.xml
 *.DS_Store*
