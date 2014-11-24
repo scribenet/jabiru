@@ -6,11 +6,9 @@ if (!file_exists($infile)) {
 	die('File ' . $infile . ' not found');
 }
 
-$xml = simplexml_load_file($infile);
-
+$xml      = simplexml_load_file($infile);
 $coverage = new Coverage();
 $coverage->fromXml($xml);
-
 $coverage->render();
 
 class Coverage
