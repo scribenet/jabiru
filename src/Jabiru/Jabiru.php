@@ -22,7 +22,7 @@ use Scribe\Jabiru\Renderer\RendererInterface;
 class Jabiru
 {
 
-    const VERSION = '0.1.0-dev';
+    const VERSION = '0.1.0';
 
     /**
      * @var RendererInterface
@@ -40,9 +40,9 @@ class Jabiru
     public function __construct(RendererInterface $renderer = null)
     {
         $this->extensions = new Collection();
-        $this->renderer = $renderer;
+        $this->renderer   = $renderer;
 
-        if (is_null($this->renderer)) {
+        if ($this->renderer === null) {
             $this->setRenderer($this->getDefaultRenderer());
         }
 

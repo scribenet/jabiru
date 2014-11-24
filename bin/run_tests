@@ -1,0 +1,26 @@
+#!/bin/bash
+COVERAGE=""
+METRICS="phpunit-coverage-clover.xml"
+
+if [ "$1" == "--coverage" ]
+then
+  COVERAGE="--coverage-clover $METRICS"
+  shift
+fi
+
+DIR=`dirname $0`
+cd $DIR/../
+vendor/phpunit/phpunit/phpunit -c phpunit.xml.dist $COVERAGE $@
+
+# exit with PHPUnit's return code
+if [ $? -ne 0 ]
+then
+  exit $?
+fi
+
+if [ "$COVERAGE" != "" ]
+then
+  echo "=============================== Code Coverage Summary =============================="
+  php ./bin/coverage $METRICS 
+  rm "$METRICS"
+fi

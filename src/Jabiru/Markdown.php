@@ -63,12 +63,12 @@ class Markdown implements EmitterInterface
             $renderer->setEmitter($this);
         }
 
-        $this->renderer      = $renderer;
-        $this->options       = $this->parseOptions($options);
-        $this->hashCollection  = new HashCollection();
-        $this->urlRegistry   = new Collection();
-        $this->titleRegistry = new Collection();
-        $this->rawContent    = $rawContent;
+        $this->renderer       = $renderer;
+        $this->options        = $this->parseOptions($options);
+        $this->hashCollection = new HashCollection();
+        $this->urlRegistry    = new Collection();
+        $this->titleRegistry  = new Collection();
+        $this->rawContent     = $rawContent;
     }
 
     /**
