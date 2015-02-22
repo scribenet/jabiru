@@ -3,3 +3,5 @@
 composer.phar
 phpunit-coverage-clover.xml
 *.DS_Store*
+/docs/_build/
+/.idea/
