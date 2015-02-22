@@ -2,7 +2,6 @@
 Syntax
 ######
 
-
 This is the full ScribleMark_ syntax definition. The latest stable syntax definition can always be found on RTD_.
 You may take a brief look at the syntax and quickly believe this to be another simple Markdown_ extension, such a
 conclusion would be incorrect. While based loosely on Markdown_ and incorporating elements of `GitHub Flavored Markdown`_
@@ -73,7 +72,8 @@ None yet...
 Footnotes
 *********
 
-.. [#fsyn1] If you are looking for a Markdown_ parser, with support for common extensions, I would highly advise looking into ParseDown_, a speedy and feature-rich parser with support for PHP_ 5.2 through 5.6 as well as hhvm_ .
+.. [#fsyn1] If you are looking for a Markdown_ parser, with support for common extensions, I would highly advise looking
+            into ParseDown_, a speedy and feature-rich parser with support for PHP_ 5.2 through 5.6 as well as hhvm_ .
 .. [#fhr1] SetExt, Sphinx, or any other heading syntax is not supported.
 .. [#fhr2] Heading levels deeper than six (such as ``<h7>`` via seven hash symbols) are not supported.
 .. [#fshr1] `Step Headings`_ were previously known as "Checkbox Headings" or "Check-able Headings".
@@ -93,4 +93,4 @@ References
 .. _PHP: http://php.net/
 .. _hhvm: http://hhvm.com/
 .. _RTD: http://readthedocs.org/
-.. _ScribleMark: https://scriblemark-library.docs.scribe.tools/en/latest/
+.. _ScribleMark: https://scribe.software/code/projects/PHPL/repos/scriblemark-library

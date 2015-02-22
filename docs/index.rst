@@ -1,9 +1,12 @@
-Welcome to ScribleMark's documentation!
-=======================================
+#########################
+ScribleMark Documentation
+#########################
 
 A PHP 5.6 Markdown parser supporting a specific subset/superset of the original Markdown implementation.
 
-Contents:
+********
+Contents
+********
 
 .. toctree::
    :maxdepth: 4
@@ -11,11 +14,13 @@ Contents:
    Read Me
    License
    Syntax
+   Console Usage
+   Library Usage
 
-Indices and tables
-==================
+******************
+Indices and Tables
+******************
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
 
