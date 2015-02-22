@@ -14,20 +14,15 @@ re-used previously implemented conventions differently, to better align the fina
 goals of `Scribe Inc.`_. As such, attempting to parse regular Markdown_, GFM_, `Markdown Extra`_, or other well-known
 implementations directly via this parser will very likely *not* function as you expect! [#fsyn1]_ !
 
-**************
-Implementation
-**************
-
-The syntax implementation has been divided into `Block-Level Elements`_ and `Inline-Level Elements`_.
-
+********************
 Block-Level Elements
-====================
+********************
 
 Block-Level Elements include Headings_, Paragraphs_, `Horizontal Rules`_, `Lists`_, `Quotes`_, `Code Blocks`_,
 `Call-Outs`_, `Security Restrictions`_, `Rows and Columns`_, and Tables_.
 
 Headings
---------
+========
 
 Only Markdown ATX-Style headings are supported [#fhr1]_ . Heading levels one through six [#fhr2]_ can be defined by prefixing
 the heading text with the the hash ``#`` symbol, using the number of hashes to define the heading level.
@@ -42,7 +37,7 @@ the heading text with the the hash ``#`` symbol, using the number of hashes to d
    ###### Heading 6
 
 Step Headings
-^^^^^^^^^^^^^
+-------------
 
 Step heads [#fshr1]_ syntax follows the same ATX-Style headings as defined when using regular `Headings`_.
 Headings can optionally be marked as check-able by using the ``[ ]`` or ``[x]`` syntax directly following the hash
@@ -64,14 +59,19 @@ once a top-level heading has been marked as optional, all sub-headings of that e
    ### [ ] Heading 3.1.2 (Optional)
 
 Lists
------
+=====
 
 Lists...
 
+*********************
 Inline-Level Elements
-=====================
+*********************
 
-.. rubric:: Footnotes
+None yet...
+
+*********
+Footnotes
+*********
 
 .. [#fsyn1] If you are looking for a Markdown_ parser, with support for common extensions, I would highly advise looking into ParseDown_, a speedy and feature-rich parser with support for PHP_ 5.2 through 5.6 as well as hhvm_ .
 .. [#fhr1] SetExt, Sphinx, or any other heading syntax is not supported.
