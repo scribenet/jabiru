@@ -44,7 +44,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'ScribleMark'
-copyright = u'2015, Scribe Inc.'
+copyright = u'2015, Scribe Inc'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -197,7 +197,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
   ('index', 'ScribleMark.tex', u'ScribleMark Documentation',
-   u'Scribe Inc.', 'manual'),
+   u'Scribe Inc', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -227,7 +227,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'scriblemark', u'ScribleMark Documentation',
-     [u'Scribe Inc.'], 1)
+     [u'Scribe Inc'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -241,7 +241,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
   ('index', 'ScribleMark', u'ScribleMark Documentation',
-   u'Scribe Inc.', 'ScribleMark', 'One line description of project.',
+   u'Scribe Inc', 'ScribleMark', 'One line description of project.',
    'Miscellaneous'),
 ]
 
@@ -262,9 +262,9 @@ texinfo_documents = [
 
 # Bibliographic Dublin Core info.
 epub_title = u'ScribleMark'
-epub_author = u'Scribe Inc.'
-epub_publisher = u'Scribe Inc.'
-epub_copyright = u'2015, Scribe Inc.'
+epub_author = u'Scribe Inc'
+epub_publisher = u'Scribe Inc'
+epub_copyright = u'2015, Scribe Inc'
 
 # The basename for the epub file. It defaults to the project name.
 #epub_basename = u'ScribleMark'

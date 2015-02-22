@@ -6,10 +6,11 @@ A PHP 5.6 Markdown parser supporting a specific subset/superset of the original 
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
 
-   readme
-   license
+   Read Me
+   License
+   Syntax
 
 Indices and tables
 ==================

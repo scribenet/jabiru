@@ -2,7 +2,7 @@ License
 =======
 
 MIT License (2-clause version)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+------------------------------
 
 **Copyright (c) 2014 Scribe Inc. <source@scribenet.com>**
 
